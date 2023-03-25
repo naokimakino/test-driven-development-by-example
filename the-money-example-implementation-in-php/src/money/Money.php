@@ -7,18 +7,21 @@ namespace Src\money;
 use Src\money\Dollar;
 use Src\money\Franc;
 
-abstract class Money
+class Money
 {
     protected int $amount;
 
     protected string $currency;
 
-    abstract function times(int $multiplier): Money;
-
     public function __construct(int $amount, string $currency)
     {
         $this->amount = $amount;
         $this->currency = $currency;
+    }
+
+    public function times(int $multiplier): Money
+    {
+        return new Money($this->amount * $multiplier, $this->currency);
     }
 
     public function currency(): string
@@ -29,7 +32,7 @@ abstract class Money
     public function equals(object $object): bool
     {
         $money = $object;
-        return $this->amount === $money->amount && (get_called_class() === get_class($money));
+        return $this->amount === $money->amount && $this->currency() === $money->currency();
     }
 
     public static function dollar(int $amount): Money
