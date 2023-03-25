@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Src\money;
 
-final class Franc
+final class Franc extends Money
 {
-    private int $amount;
-
     public function __construct(int $amount)
     {
         $this->amount = $amount;
@@ -16,11 +14,5 @@ final class Franc
     public function times(int $multiplier): Franc
     {
         return new Franc($this->amount * $multiplier);
-    }
-
-    public function equals(object $object): bool
-    {
-        $franc = $object;
-        return $this->amount === $franc->amount;
     }
 }
