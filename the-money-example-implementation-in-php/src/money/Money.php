@@ -11,6 +11,6 @@ class Money
     public function equals(object $object): bool
     {
         $money = $object;
-        return $this->amount === $money->amount;
+        return $this->amount === $money->amount && (get_called_class() === get_class($money));
     }
 }
