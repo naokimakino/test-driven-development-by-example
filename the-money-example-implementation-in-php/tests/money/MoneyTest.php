@@ -57,9 +57,23 @@ final class MoneyTest extends TestCase
         assertEquals(Money::dollar(7), $result);
     }
 
-    public function testReduceMoney() {
+    public function testReduceMoney(): void
+    {
         $bank = new Bank();
         $result = $bank->reduce(Money::dollar(1), "USD");
         assertEquals(Money::dollar(1), $result);
+    }
+
+    public function testReduceMoneyDifferentCurrency(): void
+    {
+        $bank = new Bank();
+        $bank->addRate("CHF", "USD", 2);
+        $result = $bank->reduce(Money::franc(2), "USD");
+        assertEquals(Money::dollar(1), $result);
+    }
+
+    public function testIdentityRate(): void
+    {
+        assertEquals(1, (new Bank())->rate("USD", "USD"));
     }
 }

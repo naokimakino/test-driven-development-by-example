@@ -6,5 +6,5 @@ namespace Src\money;
 
 interface Expression
 {
-    public function reduce(string $to): Money;
+    public function reduce(Bank $bank, string $to): Money;
 }
