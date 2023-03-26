@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Src\money;
 
+use PhpParser\Parser\Multiple;
+
 class Sum implements Expression
 {
     public Expression $augend;
@@ -16,10 +18,14 @@ class Sum implements Expression
         $this->addend = $addend;
     }
 
-    // 仮実装のため、返り値を?Expressionとしている。Expressionとしたい。
-    public function plus(Expression $addend): ?Expression
+    public function times(int $multiplier): Expression
     {
-        return null;
+        return new Sum($this->augend->times($multiplier), $this->addend->times($multiplier));
+    }
+
+    public function plus(Expression $addend): Expression
+    {
+        return new Sum($this, $addend);
     }
 
     public function reduce(Bank $bank, string $to): Money

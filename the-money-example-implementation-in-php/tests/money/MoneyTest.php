@@ -7,7 +7,9 @@ use Src\money\Money;
 use Src\money\Bank;
 use Src\money\Sum;
 
+use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertTrue;
 
 final class MoneyTest extends TestCase
 {
@@ -85,5 +87,27 @@ final class MoneyTest extends TestCase
         $bank->addRate("CHF", "USD", 2);
         $result = $bank->reduce($fiveBucks->plus($tenFrancs), "USD");
         assertEquals(Money::dollar(10), $result);
+    }
+
+    public function testSumPlusMoney(): void
+    {
+        $fiveBucks = Money::dollar(5);
+        $tenFrancs = Money::franc(10);
+        $bank = new Bank();
+        $bank->addRate("CHF", "USD", 2);
+        $sum = (new Sum($fiveBucks, $tenFrancs))->plus($fiveBucks);
+        $result = $bank->reduce($sum, "USD");
+        assertEquals(Money::dollar(15), $result);
+    }
+
+    public function testSumTimes(): void
+    {
+        $fiveBucks = Money::dollar(5);
+        $tenFrancs = Money::franc(10);
+        $bank = new Bank();
+        $bank->addRate("CHF", "USD", 2);
+        $sum = (new Sum($fiveBucks, $tenFrancs))->times(2);
+        $result = $bank->reduce($sum, "USD");
+        assertEquals(Money::dollar(20), $result);
     }
 }
